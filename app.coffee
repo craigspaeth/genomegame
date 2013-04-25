@@ -31,7 +31,7 @@ nap
     css:
       all: ['/app/stylesheets/**/*.styl']
     jst:
-      all: ['/app/templates/**/*.jade']
+      all: []
     
 # Load routes
 for route, fn of routes

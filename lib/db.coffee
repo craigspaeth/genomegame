@@ -15,4 +15,4 @@ _ = require 'underscore'
   new Collection @db, name
   
 ensureConnected = =>
-  throw @err or "No database client open." unless @db?
+  throw @err or "No database client open. Try running require('lib/db').open" unless @db?

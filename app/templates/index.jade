@@ -1,0 +1,13 @@
+doctype 5
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    != nap.css('all')
+  body
+    body
+      h1 Foobar
+    #scripts
+      != nap.js('vendor')
+      != nap.js('all')
+      != nap.jst('all')

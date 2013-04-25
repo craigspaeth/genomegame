@@ -1,0 +1,19 @@
+// 
+// Library of mixins and variables
+// 
+
+highlight-color = #ae2721
+sans-serif = 'Lucida Grande', 'Helvetica', 'Arial', 'Sans-serif'
+serif = 'Calluna', 'Georgia', 'Serif'
+
+font-face(family, filename, style = normal, weight = normal)
+  @font-face
+    font-family family
+    font-weight weight
+    font-style style
+    src url("/fonts/" + filename + ".eot?#iefix") format("embedded-opentype")
+  @font-face
+    font-family family
+    font-weight weight
+    font-style style
+    src url("/fonts/" + filename + ".woff") format("woff"), url("/fonts/" + filename + ".ttf") format("truetype"), url("/fonts/" + filename + ".svg") format("svg")

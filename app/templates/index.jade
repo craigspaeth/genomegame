@@ -1,14 +1,17 @@
 doctype 5
 html
   head
-    title= title
+    title= user
     link(rel='stylesheet', href='/stylesheets/style.css')
     != nap.css('all')
   body
     body
       #frames
         include frames/join
+        include frames/game
     #scripts
       != nap.js('vendor')
       != nap.js('all')
       != nap.jst('all')
+    script
+      var USER = !{JSON.stringify(user)}

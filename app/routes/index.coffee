@@ -3,6 +3,7 @@ glob = require 'glob'
 @['GET /'] = (req, res) ->
   res.render "index",
     title: "Express"
+    user: req.session.user
 
 # Load API routes
 for file in glob.sync __dirname + '/api/**/*'

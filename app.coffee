@@ -7,16 +7,18 @@ global.nap = require 'nap'
 # Configure App
 app = express()
 app.configure ->
-  app.set "port", process.env.PORT or 3000
-  app.set "views", __dirname + "/app/templates"
-  app.set "view engine", "jade"
-  app.use express.favicon()
-  app.use express.logger("dev")
-  app.use express.bodyParser()
-  app.use express.methodOverride()
-  app.use app.router
-  app.use express.static(path.join(__dirname, "public"))
-  app.use express.errorHandler()
+  @set "port", process.env.PORT or 3000
+  @set "views", __dirname + "/app/templates"
+  @set "view engine", "jade"
+  @use express.favicon()
+  @use express.logger("dev")
+  @use express.bodyParser()
+  @use express.methodOverride()
+  @use express.cookieParser()
+  @use express.cookieSession secret: 'Genome123'
+  @use @router
+  @use express.static(path.join(__dirname, "public"))
+  @use express.errorHandler()
 
 # Configure nap
 nap
@@ -32,8 +34,7 @@ nap
       all: ['/app/stylesheets/**/*.styl']
     jst:
       all: []
-    
-# Load routes
+  
 for route, fn of routes
   verb = route.split(' ')[0]
   path = route.split(' ')[1]

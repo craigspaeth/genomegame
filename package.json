@@ -17,6 +17,7 @@
     "underscore": "*",
     "nap": "*",
     "stylus": "*",
-    "nib": "*"
+    "nib": "*",
+    "coffee-script": "*"
   }
 }

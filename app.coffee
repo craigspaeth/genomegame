@@ -3,6 +3,8 @@ routes = require './app/routes'
 path = require 'path'
 db = require './lib/db'
 global.nap = require 'nap'
+http = require 'http'
+socketio = require 'socket.io'
 
 # Configure App
 app = express()
@@ -42,16 +44,20 @@ nap
     jst:
       all: []
 
+# Load routes
 for route, fn of routes
   verb = route.split(' ')[0]
   path = route.split(' ')[1]
   app[verb.toLowerCase()] path, fn
 
-app.get '*', (req, res, next) ->
-  console.log req.session.userId
-  next()
+# Start app server
+server = app.listen app.get("port")
 
-app.listen app.get("port"), ->
-  console.log "Express server listening on port " + app.get("port")
-db.open (err) -> console.warn(err) if err
-nap.package() if process.env.NODE_ENV is 'production'
+# Open DB connection
+db.open (err) -> console.warn err if err
+
+# Connect socket IO
+io = socketio.listen(server)
+io.on 'connection', (socket) ->
+  socket.on 'event', console.log
+  socket.on 'disconnect', console.log

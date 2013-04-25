@@ -23,13 +23,9 @@ module.exports = class Base
     
   save: (cb) ->
     if @id()
-      @collection().update { _id: @id() }, @attrs, { upsert: true }, ->
-        @set doc unless err
-        cb? arguments...
+      @collection().update { _id: @id() }, @attrs, { upsert: true }, cb
     else
-      @collection().insert @attrs, ->
-        @set doc unless err
-        cb? arguments...
+      @collection().insert @attrs, cb
      @
      
   fetch: (cb) ->

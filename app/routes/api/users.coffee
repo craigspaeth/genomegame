@@ -1,4 +1,10 @@
 User = require "#{process.cwd()}/app/models/user"
+
+@['GET users/:id'] = (req, res) ->
+  user = new User _id: req.params.id
+  user.fetch (err, doc) ->
+    return res.send 500, err if err
+    res.send user.toJSON()
     
 @['GET users'] = (req, res) ->
   User.find().toArray (err, docs) ->

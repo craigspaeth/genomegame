@@ -18,6 +18,7 @@
     "nap": "*",
     "stylus": "*",
     "nib": "*",
-    "coffee-script": "*"
+    "coffee-script": "*",
+    "socket.io": "*"
   }
 }

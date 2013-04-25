@@ -6,14 +6,15 @@ for file in glob.sync __dirname + '/api/**/*'
     verb = route.split(' ')[0]
     path = route.split(' ')[1]
     @["#{verb} /api/#{path}"] = fn
-    
+
 # Push state fallbacks
 indexRoutes = [
   'GET /'
   'GET /join'
+  'GET /game'
 ]
 for route in indexRoutes
   @[route] = (req, res) ->
     res.render "index",
       title: "Express"
-      user: req.session.user
+      userId: req.session.userId

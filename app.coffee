@@ -30,9 +30,9 @@ nap
         '/app/client/vendor/backbone.js'
       ]
       all: [
-        '/app/client/vendor/**/*.js'
         '/app/client/lib/**/*.coffee'
         '/app/client/models/**/*.coffee'
+        '/app/client/collections/**/*.coffee'
         '/app/client/views/**/*.coffee'
         '/app/client/routers/**/*.coffee'
         '/app/client/app.coffee'
@@ -41,11 +41,15 @@ nap
       all: ['/app/stylesheets/**/*.styl']
     jst:
       all: []
-  
+
 for route, fn of routes
   verb = route.split(' ')[0]
   path = route.split(' ')[1]
   app[verb.toLowerCase()] path, fn
+
+app.get '*', (req, res, next) ->
+  console.log req.session.userId
+  next()
 
 app.listen app.get("port"), ->
   console.log "Express server listening on port " + app.get("port")

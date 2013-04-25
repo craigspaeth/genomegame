@@ -7,8 +7,8 @@ User = require "#{process.cwd()}/app/models/user"
 
 @['POST users'] = (req, res) ->
   user = new User req.body
-  req.session.user = user
-  user.save (err, doc) ->
+  user.save (err, docs) ->
+    req.session.userId = user.set(docs[0]).toJSON().id
     return res.send 500, err if err
     res.send user.toJSON()
     

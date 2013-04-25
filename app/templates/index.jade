@@ -1,7 +1,7 @@
 doctype 5
 html
   head
-    title= user.name
+    title= userId ? userId : 'Loggin in'
       |  in The Genome Game
     != nap.css('all')
   body
@@ -14,4 +14,4 @@ html
       != nap.js('all')
       != nap.jst('all')
     script
-      var USER = !{JSON.stringify(user)}
+      var USER_ID = !{userId ? "'" + userId + "'" : 'null'};

@@ -29,7 +29,14 @@ nap
         '/app/client/vendor/underscore.js'
         '/app/client/vendor/backbone.js'
       ]
-      all: ['/app/client/**/*.coffee']
+      all: [
+        '/app/client/vendor/**/*.js'
+        '/app/client/lib/**/*.coffee'
+        '/app/client/models/**/*.coffee'
+        '/app/client/views/**/*.coffee'
+        '/app/client/routers/**/*.coffee'
+        '/app/client/app.coffee'
+      ]
     css:
       all: ['/app/stylesheets/**/*.styl']
     jst:

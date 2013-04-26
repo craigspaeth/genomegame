@@ -18,28 +18,26 @@ module.exports = (server) ->
     artworkGenes = Artwork.currentArtwork.geneNames()
     User.find().toArray (err, docs) ->
       return callback(err) if err
-      console.log (for doc in docs
-        user = new User(doc)
-        {
-          name: user.get('name')
-          match: _.intersection(user.get('selectedGenes'), artworkGenes).length
-          diff: _.difference(artworkGenes, user.get('selectedGenes')).length
-          selected: user.get('selectedGenes').length
-        }
+      users = (new User(doc) for doc in docs)
+      sorted = _.sortBy(users, (user) ->
+        numRight = _.intersection(user.get('selectedGenes'), artworkGenes).length
+        numWrong = user.get('selectedGenes').length - numRight
+        score = numRight - numWrong
+        user.set score: score
+        score
       )
+      console.log (user.get('score') for user in sorted)
       callback()
     
   # Select and emit a new artwork, and clear our the users selections
   emitRandomArtwork = (callback) ->
     Artwork.randomArtwork (err, artwork) ->
       return callback(err) if err
-      User.update {}, { selectedGenes: [] }, (err, docs) ->
-        return callback(err) if err
-        Artwork.currentArtwork = artwork
-        console.log "Selected #{Artwork.currentArtwork.get 'title'} with "  +
-                    " #{Artwork.currentArtwork.geneNames().length} genes."
-        io.sockets.emit 'artwork:random', artwork.toJSON()
-        callback()
+      Artwork.currentArtwork = artwork
+      console.log "Selected #{Artwork.currentArtwork.get 'title'} with "  +
+                  " #{Artwork.currentArtwork.geneNames().length} genes."
+      io.sockets.emit 'artwork:random', artwork.toJSON()
+      callback()
   
   # Setup artwork loop
   setupRound = ->

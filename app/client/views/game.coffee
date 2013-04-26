@@ -3,11 +3,14 @@ class window.GameView extends Backbone.View
   el: '#game'
   
   initialize: ->
+    @user = currentUser
     @artwork = new Artwork
     @artwork.url = '/api/current-artwork'
     @artwork.on 'change', @renderRandomArtwork
     socket.on 'user:enter', _.debounce @fetchUsersAndRender
-    socket.on 'artwork:random', (data) => @artwork.set data
+    socket.on 'artwork:random', (data) => 
+      @artwork.set data
+      @user.set selectedGenes: []
     @artwork.fetch()
       
   fetchUsersAndRender: =>
@@ -30,7 +33,7 @@ class window.GameView extends Backbone.View
     'click ul.genes li': 'selectGene'
   
   selectGene: (e) ->
-    currentUser.get('selectedGenes').push $(e.currentTarget).find('.gene-name').html()
-    currentUser.save()
+    @user.get('selectedGenes').push $(e.currentTarget).find('.gene-name').html()
+    @user.save()
     $(e.currentTarget).css opacity: 0.3
     

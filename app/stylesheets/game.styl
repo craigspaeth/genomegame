@@ -44,9 +44,11 @@ contained-width = 1000px
         float left
         width 200px
         height 100px
+        transition 0.5s cubic-bezier(0.895, 0.780, 0.000, 1.505)
+        transform-style preserve-3d
         &.active
           color highlight-color
-          transform scaleX(-1)
+          transform rotateX(900deg)
         .gene-box
           background-size 100% 100%
           width 50px

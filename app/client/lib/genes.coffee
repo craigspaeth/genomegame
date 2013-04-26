@@ -1,4 +1,4 @@
-window.genes = [
+window.allGenes = [
 	"Abstraction (DO NOT USE)",
 	"Conceptual",
 	"Expressive",

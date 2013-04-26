@@ -4,9 +4,11 @@ class window.GameView extends Backbone.View
   
   initialize: ->
     @artwork = new Artwork
+    @artwork.url = '/api/random-artwork'
     @artwork.on 'change', @renderRandomArtwork
     socket.on 'user:enter', @fetchUsersAndRender
     socket.on 'artwork:random', (data) => @artwork.set data
+    @artwork.fetch()
     
   fetchUsersAndRender: =>
     (@users = new Users).fetch().then @renderUsers
@@ -19,9 +21,8 @@ class window.GameView extends Backbone.View
   renderRandomArtwork: =>
     @$('.artwork-title').html @artwork.get('title')
     @$('.artwork-frame img').attr 'src', @artwork.imageUrl()
-    console.log (name for name, val of @artwork.get('genome').genes)
-    @$('ul.genes').html (for name, val of @artwork.get('genome').genes
-      JST['artworks/gene_list_item'] gene: name
+    @$('ul.genes').html (for gene in @artwork.randomGenes()
+      JST['artworks/gene_list_item'] gene: gene
     )
   
   events:

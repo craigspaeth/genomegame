@@ -14,4 +14,4 @@ module.exports = (server) ->
   emitArtwork = ->
     Artwork.randomArtwork (err, artwork) ->
       io.sockets.emit 'artwork:random', artwork.toJSON()
-  setInterval emitArtwork, 1000
+  setInterval emitArtwork, 20000

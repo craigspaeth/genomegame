@@ -26,7 +26,8 @@ module.exports = (server) ->
         user.set score: score
         -score
       )
-      console.log ([user.get('name'), user.get('score')] for user in sorted)
+      console.log "WINNER #{sorted[0]?.get 'name'} #{sorted[0]?.get 'score'}"
+      io.sockets.emit 'user:win', sorted[0].get('id')
       callback()
     
   # Select and emit a new artwork, and clear our the users selections
@@ -34,8 +35,6 @@ module.exports = (server) ->
     Artwork.randomArtwork (err, artwork) ->
       return callback(err) if err
       Artwork.currentArtwork = artwork
-      console.log "Selected #{Artwork.currentArtwork.get 'title'} with "  +
-                  " #{Artwork.currentArtwork.geneNames().length} genes."
       io.sockets.emit 'artwork:random', artwork.toJSON()
       callback()
   
@@ -48,4 +47,4 @@ module.exports = (server) ->
         setTimeout setupRound, TIMEOUT
   setupRound()
   
-module.exports.TIMEOUT = TIMEOUT = 10000
+module.exports.TIMEOUT = TIMEOUT = 15000

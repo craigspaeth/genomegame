@@ -11,6 +11,11 @@ class window.GameView extends Backbone.View
     socket.on 'artwork:random', (data) => 
       @artwork.set data
       @user.set selectedGenes: []
+    socket.on 'user:win', (id) =>
+      console.log 'WINNDER', id
+      if @user.get('id') is id
+        $('body').animate { opacity: 0 }, 'fast', ->
+          $(@).animate { opacity: 1 }, 'fast'
     @artwork.fetch()
       
   fetchUsersAndRender: =>
@@ -18,7 +23,7 @@ class window.GameView extends Backbone.View
   
   renderUsers: =>
     @$('ul.users').html @users.map((user) =>
-      JST['users/list_item'] user: user
+      JST['users/list_item'] user: user, current: user.get('id') is @user.get('id')
     ).join ''
   
   renderRandomArtwork: =>
@@ -36,4 +41,4 @@ class window.GameView extends Backbone.View
     @user.get('selectedGenes').push $(e.currentTarget).find('.gene-name').html()
     @user.save()
     $(e.currentTarget).css opacity: 0.3
-    
+  

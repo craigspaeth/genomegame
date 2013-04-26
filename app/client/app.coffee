@@ -10,3 +10,6 @@ window.onbeforeunload = ->
   currentUser.destroy()
   socket.emit 'user:enter', currentUser.id
   return
+  
+bangers = new Audio "/sounds/bangers.mp3"
+bangers.play()

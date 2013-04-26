@@ -2,6 +2,9 @@ class window.GameView extends Backbone.View
   
   el: '#game'
   
+  kittenSnd: new Audio '/sounds/meow.wav'
+  bombSnd: new Audio '/sounds/bomb.wav'
+  
   initialize: ->
     @user = currentUser
     @users = new Users
@@ -9,8 +12,10 @@ class window.GameView extends Backbone.View
     @artwork.url = '/api/current-artwork'
     @artwork.on 'change', @renderRandomArtwork
     socket.on 'user:enter', @fetchUsersAndRender
+    socket.on 'user:enter',  => @kittenSnd.play()
     socket.on 'user:win', @fetchUsersAndRender
     socket.on 'user:win', @renderBetween
+    socket.on 'user:win', => @bombSnd.play()
     socket.on 'artwork:random', (data) => 
       @artwork.set data
       @user.save selectedGenes: []
@@ -34,7 +39,6 @@ class window.GameView extends Backbone.View
     @$('.betweem-frame ul.actual-genes').html (for gene in @artwork.matchedGenes(@randomGenes)
       "<li>#{gene}</li>"
     )
-    
   
   renderRandomArtwork: =>
     @randomGenes = @artwork.randomGenes()
@@ -54,4 +58,5 @@ class window.GameView extends Backbone.View
     @user.get('selectedGenes').push $(e.currentTarget).find('.gene-name').html()
     @user.save()
     $(e.currentTarget).addClass 'active'
+    new Audio('/sounds/gunshot.wav').play()
   

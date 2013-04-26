@@ -6,8 +6,10 @@ class window.GameView extends Backbone.View
     @artwork = new Artwork
     @artwork.on 'change', @renderRandomArtwork
     socket.on 'user:enter', @fetchUsersAndRender
-    socket.on 'artwork:random', (data) => @artwork.set data
-    
+    socket.on 'artwork:random', (data) => 
+      @artwork.set data
+      setTimeout @submitSelection, TIMEOUT
+      
   fetchUsersAndRender: =>
     (@users = new Users).fetch().then @renderUsers
   
@@ -22,7 +24,9 @@ class window.GameView extends Backbone.View
     @$('ul.genes').html (for gene in @artwork.randomGenes()
       JST['artworks/gene_list_item'] gene: gene
     )
-    @$('.progress-bar').css(width: '100%').animate { width: '0%' }, 5000
+    @$('.progress-bar').stop().css(width: '100%').animate { width: '0%' }, TIMEOUT
+  
+  
   
   events:
     'activate': 'activate'

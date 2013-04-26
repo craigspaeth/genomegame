@@ -18,3 +18,6 @@ for route in indexRoutes
     res.render "index",
       title: "Express"
       userId: req.session.userId
+      timeout: require('../../sockets').TIMEOUT
+      
+console.log require('../../sockets').TIMEOUT

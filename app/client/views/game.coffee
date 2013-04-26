@@ -4,6 +4,7 @@ class window.GameView extends Backbone.View
   
   kittenSnd: new Audio '/sounds/meow.wav'
   bombSnd: new Audio '/sounds/bomb.wav'
+  gunSnd: new Audio '/sounds/gunshot.wav'
   
   initialize: ->
     @user = currentUser
@@ -58,5 +59,5 @@ class window.GameView extends Backbone.View
     @user.get('selectedGenes').push $(e.currentTarget).find('.gene-name').html()
     @user.save()
     $(e.currentTarget).addClass 'active'
-    new Audio('/sounds/gunshot.wav').play()
+    @gunSnd.play()
   

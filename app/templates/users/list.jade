@@ -1,0 +1,5 @@
+li
+  h3= user.get('name')
+  ul.stars
+    for star in new Array(user.get('stars'))
+      li.star

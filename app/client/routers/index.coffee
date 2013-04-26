@@ -12,3 +12,6 @@ class window.Router extends Backbone.Router
   
   initialize: ->
     _.defer => @navigate (if currentUser.isNew() then '/join' else '/game'), trigger: true
+    
+  game: ->
+    socket.emit 'user:enter', currentUser.id

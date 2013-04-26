@@ -13,7 +13,7 @@ app.configure ->
   @set "views", __dirname + "/app/templates"
   @set "view engine", "jade"
   @use express.favicon()
-  @use express.logger("dev")
+  # @use express.logger("dev")
   @use express.bodyParser()
   @use express.methodOverride()
   @use express.cookieParser()
@@ -30,6 +30,7 @@ nap
         '/app/client/vendor/jquery.js'
         '/app/client/vendor/underscore.js'
         '/app/client/vendor/backbone.js'
+        '/app/client/vendor/**/*'
       ]
       all: [
         '/app/client/lib/**/*.coffee'
@@ -57,7 +58,7 @@ server = app.listen app.get("port")
 db.open (err) -> console.warn err if err
 
 # Connect socket IO
-io = socketio.listen(server)
+io = socketio.listen(server, log: off)
 io.on 'connection', (socket) ->
-  socket.on 'event', console.log
-  socket.on 'disconnect', console.log
+  socket.on 'user:enter', (id) ->
+    io.sockets.emit 'user:enter', id

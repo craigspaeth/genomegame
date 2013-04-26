@@ -23,7 +23,7 @@ module.exports = class Base
     
   save: (cb) ->
     if @id()
-      @collection().update { _id: @id() }, @attrs, { upsert: true }, cb
+      @collection().update { _id: @id() }, @toJSON(), cb
     else
       @collection().insert @attrs, cb
      @
@@ -40,7 +40,7 @@ module.exports = class Base
     @
   
   toJSON: ->
-    _.extend @attrs, { id: @get('_id'), _id: undefined }
+    _.extend _.clone(@attrs), { id: @id(), _id: undefined }
   
   @docsToJSON: (docs) ->
     models = (new @(doc) for doc in docs)

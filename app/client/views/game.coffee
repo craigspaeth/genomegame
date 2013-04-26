@@ -1,14 +1,6 @@
 class window.GameView extends Backbone.View
   
   el: '#game'
-  
-  initialize: ->
-    @artwork = new Artwork
-    @artwork.on 'change', @renderRandomArtwork
-    socket.on 'user:enter', @fetchUsersAndRender
-    socket.on 'artwork:random', (data) => 
-      @artwork.set data
-      setTimeout @submitSelection, TIMEOUT
       
   fetchUsersAndRender: =>
     (@users = new Users).fetch().then @renderUsers
@@ -26,9 +18,22 @@ class window.GameView extends Backbone.View
     )
     @$('.progress-bar').stop().css(width: '100%').animate { width: '0%' }, TIMEOUT
   
-  
+  submitSelection: ->
+    console.log "Saving #{currentUser.get 'selectedGenes'}"
+    currentUser.save()
   
   events:
+    'click ul.genes li': 'selectGene'
     'activate': 'activate'
-  
+    
   activate: ->
+    @artwork = new Artwork
+    @artwork.on 'change', @renderRandomArtwork
+    socket.on 'user:enter', @fetchUsersAndRender
+    socket.on 'artwork:random', (data) => 
+      @artwork.set data
+      setTimeout @submitSelection, TIMEOUT
+  
+  selectGene: (e) ->
+    currentUser.get('selectedGenes').push $(e.currentTarget).find('.gene-name').html()
+    

@@ -14,7 +14,16 @@ User = require "#{process.cwd()}/app/models/user"
 @['POST users'] = (req, res) ->
   user = new User req.body
   user.save (err, docs) ->
-    req.session.userId = user.set(docs[0]).toJSON().id
+    return res.send 500, err if err
+    user.set docs[0]
+    req.session.userId = user.id()
+    res.send "ID: #{user.toJSON().id}"
+    
+@['PUT users/:id'] = (req, res) ->
+  user = new User _id: req.body.id
+  console.log user.toJSON()
+  return res.send 500 unless user.get('_id')
+  user.save (err, docs) ->
     return res.send 500, err if err
     res.send user.toJSON()
     

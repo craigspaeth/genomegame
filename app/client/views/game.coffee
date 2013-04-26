@@ -19,9 +19,8 @@ class window.GameView extends Backbone.View
     @$('.progress-bar').stop().css(width: '100%').animate { width: '0%' }, TIMEOUT
   
   submitSelection: ->
-    console.log "Saving #{currentUser.get 'selectedGenes'}"
     currentUser.save()
-  
+    
   events:
     'click ul.genes li': 'selectGene'
     'activate': 'activate'

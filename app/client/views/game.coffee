@@ -27,7 +27,6 @@ class window.GameView extends Backbone.View
     ).join ''
   
   renderBetween: (ids) =>
-    console.log 'IDS', ids
     @$('.betweem-frame').show()
     @$('.artwork-frame').hide()
     @$('h1 span.names').html (@users.get(id).get('name') for id in ids).join(' ')

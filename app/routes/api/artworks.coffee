@@ -15,8 +15,8 @@ _ = require 'underscore'
 @['POST artworks'] = (req, res) ->
   artwork = new Artwork req.body
   artwork.save (err, docs) ->
-    req.session.artworkId = artwork.set(docs[0]).toJSON().id
     return res.send 500, err if err
+    req.session.artworkId = artwork.set(docs[0]).toJSON().id
     res.send artwork.toJSON()
     
 @['DELETE artworks/:id'] = (req, res) ->

@@ -5,3 +5,8 @@ $ ->
     console.log "Welcome #{currentUser.get 'name'}"
     window.router = new Router
     Backbone.history.start pushState: true
+    
+window.onbeforeunload = ->
+  currentUser.destroy()
+  socket.emit 'user:enter', currentUser.id
+  return

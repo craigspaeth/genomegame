@@ -35,6 +35,7 @@ _ = require 'underscore'
   user = new User _id: req.params.id
   user.fetch (err, doc) ->
     return res.send 500, err if err
+    req.session.userId = null
     user.destroy (err) ->
       return res.send 500, err if err
       res.send user.toJSON()

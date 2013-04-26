@@ -4,6 +4,8 @@
 
 @import 'lib'
 
+contained-width = 1000px
+
 #game
   
   // Guessing artwork frame
@@ -22,10 +24,20 @@
       span.artwork-title
         font-weight bold
     
+    // Progress bar
+    .progress-bar-container
+      width contained-width
+      padding 2px
+      margin 20px auto
+      border 1px solid
+      .progress-bar
+        background black
+        height 10px
+      
     // Genes list
     ul.genes
       clearfix()
-      width 1000px
+      width contained-width
       margin auto
       li
         margin 20px

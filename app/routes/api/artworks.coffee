@@ -28,9 +28,5 @@ _ = require 'underscore'
       res.send artwork.toJSON()
       
 @['GET random-artwork'] = (req, res) ->
-  Artwork.count (err, count) ->
-    Artwork.find(
-      "additional_images": { $size: 1 }
-      "additional_images.0.image_versions": 'medium'
-    ).limit(1).skip(_.random 0, count).toArray (err, docs) ->
-      res.send new Artwork(docs[0]).toJSON()
+  Artwork.randomArtwork (err, artwork) ->
+    res.send artwork.toJSON()

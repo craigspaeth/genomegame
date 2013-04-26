@@ -40,8 +40,11 @@ module.exports = class Base
     @
   
   toJSON: ->
-    _.extend _.clone(@attrs), { id: @id(), _id: undefined }
-  
+    attrs = _.clone(@attrs)
+    attrs.id = @id()
+    delete attrs._id
+    attrs
+    
   @docsToJSON: (docs) ->
     models = (new @(doc) for doc in docs)
     (model.toJSON() for model in models)

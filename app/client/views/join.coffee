@@ -11,6 +11,5 @@ class window.JoinView extends Backbone.View
   
   createUser: ->
     new User(name: @$('input').val()).save().then ->
-      return
       router.navigate '/game', trigger: true
     false

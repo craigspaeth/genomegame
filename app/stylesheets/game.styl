@@ -9,7 +9,7 @@
   // Guessing artwork frame
   .artwork-frame
     .img-container
-      margin 50px auto
+      margin 20px auto
       width 400px
       text-align center
       img
@@ -21,10 +21,36 @@
       margin 20px 0
       span.artwork-title
         font-weight bold
-  
+    
+    // Genes list
+    ul.genes
+      clearfix()
+      width 1000px
+      margin auto
+      li
+        margin 20px
+        float left
+        width 200px
+        height 140px
+        .gene-box
+          width 100px
+          height @width
+          background-size 100% 100%
+          width 80px
+          height @width
+          margin auto
+        .gene-name
+          margin 20px 0
+          text-align center
+    
   // Users list
   ul.users
-    margin 0 50px
+    position fixed
+    bottom 0
+    left 0
+    width 100%
+    background #f2f2f2
+    padding 20px
     h3
       font-weight bold
     li

@@ -33,6 +33,7 @@ class window.GameView extends Backbone.View
   
   renderBetween: (ids) =>
     @$('.artwork-frame img').hide "explode", { pieces: 25 }, 400, =>
+      @$('.artwork-frame img').show()
       @$('.artwork-frame').hide()
       @$('.betweem-frame').show()
     @$('h1 span.names').html _.toSentence (@users.get(id).get('name') for id in ids)

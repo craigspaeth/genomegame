@@ -47,5 +47,5 @@ class window.GameView extends Backbone.View
   selectGene: (e) ->
     @user.get('selectedGenes').push $(e.currentTarget).find('.gene-name').html()
     @user.save()
-    $(e.currentTarget).css opacity: 0.3
+    $(e.currentTarget).addClass 'active'
   

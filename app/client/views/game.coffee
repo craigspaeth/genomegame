@@ -4,6 +4,7 @@ class window.GameView extends Backbone.View
   
   initialize: ->
     @user = currentUser
+    @users = new Users
     @artwork = new Artwork
     @artwork.url = '/api/current-artwork'
     @artwork.on 'change', @renderRandomArtwork
@@ -17,9 +18,8 @@ class window.GameView extends Backbone.View
     @fetchUsersAndRender()
       
   fetchUsersAndRender: =>
-    (@users = new Users).fetch().then =>
+    @users.fetch().then =>
       @renderUsers()
-      @renderBetween()
   
   renderUsers: =>
     @$('ul.users').html @users.map((user) =>

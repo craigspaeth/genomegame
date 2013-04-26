@@ -4,7 +4,6 @@ path = require 'path'
 db = require './lib/db'
 global.nap = require 'nap'
 http = require 'http'
-socketio = require 'socket.io'
 
 # Configure App
 app = express()
@@ -58,7 +57,4 @@ server = app.listen app.get("port")
 db.open (err) -> console.warn err if err
 
 # Connect socket IO
-io = socketio.listen(server, log: off)
-io.on 'connection', (socket) ->
-  socket.on 'user:enter', (id) ->
-    io.sockets.emit 'user:enter', id
+require('./sockets')(server)

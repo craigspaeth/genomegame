@@ -4,9 +4,9 @@ class window.GameView extends Backbone.View
   
   initialize: ->
     @artwork = new Artwork
-    @artwork.url = '/api/random-artwork'
-    @artwork.fetch().then @renderRandomArtwork
+    @artwork.on 'change', @renderRandomArtwork
     socket.on 'user:enter', @fetchUsersAndRender
+    socket.on 'artwork:random', (data) => @artwork.set data
     
   fetchUsersAndRender: =>
     (@users = new Users).fetch().then @renderUsers

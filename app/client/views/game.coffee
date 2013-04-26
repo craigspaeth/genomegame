@@ -32,8 +32,9 @@ class window.GameView extends Backbone.View
     ).join ''
   
   renderBetween: (ids) =>
-    @$('.betweem-frame').show()
-    @$('.artwork-frame').hide()
+    @$('.artwork-frame img').hide "explode", { pieces: 25 }, 400, =>
+      @$('.artwork-frame').hide()
+      @$('.betweem-frame').show()
     @$('h1 span.names').html _.toSentence (@users.get(id).get('name') for id in ids)
     @$('.betweem-frame .artwork-container img').attr 'src', @artwork.imageUrl()
     @$('.betweem-frame ul.actual-genes').html (for gene in @artwork.matchedGenes(@randomGenes)

@@ -19,7 +19,10 @@ class window.GameView extends Backbone.View
   renderRandomArtwork: =>
     @$('.artwork-title').html @artwork.get('title')
     @$('.artwork-frame img').attr 'src', @artwork.imageUrl()
-    @$('ul.genes').html JST['']
+    console.log (name for name, val of @artwork.get('genome').genes)
+    @$('ul.genes').html (for name, val of @artwork.get('genome').genes
+      JST['artworks/gene_list_item'] gene: name
+    )
   
   events:
     'activate': 'activate'

@@ -30,11 +30,17 @@ class window.GameView extends Backbone.View
     @$('.betweem-frame').show()
     @$('.artwork-frame').hide()
     @$('h1 span.names').html (@users.get(id).get('name') for id in ids).join(' ')
+    @$('.betweem-frame .artwork-container img').attr 'src', @artwork.imageUrl()
+    @$('.betweem-frame ul.actual-genes').html (for gene in @artwork.matchedGenes(@randomGenes)
+      "<li>#{gene}</li>"
+    )
+    
   
   renderRandomArtwork: =>
+    @randomGenes = @artwork.randomGenes()
     @$('.artwork-title').html @artwork.get('title')
     @$('.artwork-frame img').attr 'src', @artwork.imageUrl()
-    @$('ul.genes').html (for gene in @artwork.randomGenes()
+    @$('ul.genes').html (for gene in @randomGenes
       JST['artworks/gene_list_item'] gene: gene
     )
     @$('.progress-bar').stop().css(width: '100%').animate { width: '0%' }, TIMEOUT

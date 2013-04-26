@@ -24,9 +24,9 @@ module.exports = (server) ->
         numWrong = user.get('selectedGenes').length - numRight
         score = numRight - numWrong
         user.set score: score
-        score
+        -score
       )
-      console.log (user.get('score') for user in sorted)
+      console.log ([user.get('name'), user.get('score')] for user in sorted)
       callback()
     
   # Select and emit a new artwork, and clear our the users selections

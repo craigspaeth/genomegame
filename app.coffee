@@ -54,6 +54,10 @@ for route, fn of routes
   path = route.split(' ')[1]
   app[verb.toLowerCase()] path, fn
 
+app.get '*', (req, res, next) ->
+  req.session = null
+  next()
+
 # Open DB connection, start app server, then load sockets
 db.open (err) ->
   User.drop()

@@ -8,9 +8,29 @@ global-reset()
 body
   color black
   font-family sans-serif
-  line-heigh 1.4em
-  
+  line-height 1.4em
+  font-size font-size
+
+input
+  border 2px solid #ccc
+  padding 10px
+  font-size font-size
+  transition border-color 0.3s
+  &:focus
+    border 2px solid black
+    outline none
+
+button
+  font-size font-size
+  padding 10px
+  background black
+  color white
+  border 2px solid black
+  cursor pointer
+
 #frames
+  width 1000px
+  margin auto
   > div
     display none
     &.active

@@ -55,9 +55,9 @@ for route, fn of routes
   app[verb.toLowerCase()] path, fn
 
 
-app.get '*', (req, res, next) ->
-  req.session = null
-  next()
+# app.get '*', (req, res, next) ->
+#   req.session = null
+#   next()
 
 # Open DB connection, start app server, then load sockets
 db.open (err) ->

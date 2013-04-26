@@ -7,8 +7,6 @@ for file in glob.sync __dirname + '/api/**/*'
     path = route.split(' ')[1]
     @["#{verb} /api/#{path}"] = fn
 
-console.log @
-
 # Push state fallbacks
 indexRoutes = [
   'GET /'

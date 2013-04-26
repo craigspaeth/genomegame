@@ -49,7 +49,6 @@ nap
 for route, fn of routes
   verb = route.split(' ')[0]
   path = route.split(' ')[1]
-  console.log verb.toLowerCase(), path
   app[verb.toLowerCase()] path, fn
 
 # Start app server

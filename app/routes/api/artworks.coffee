@@ -1,4 +1,5 @@
 Artwork = require "#{process.cwd()}/app/models/artwork"
+_ = require 'underscore'
 
 @['GET artworks/:id'] = (req, res) ->
   artwork = new Artwork _id: req.params.id
@@ -7,7 +8,7 @@ Artwork = require "#{process.cwd()}/app/models/artwork"
     res.send artwork.toJSON()
     
 @['GET artworks'] = (req, res) ->
-  Artwork.find().toArray (err, docs) ->
+  Artwork.find().limit(10).toArray (err, docs) ->
     return res.send 500, err if err
     res.send Artwork.docsToJSON(docs)
 
@@ -25,3 +26,11 @@ Artwork = require "#{process.cwd()}/app/models/artwork"
     artwork.destroy (err) ->
       return res.send 500, err if err
       res.send artwork.toJSON()
+      
+@['GET random-artwork'] = (req, res) ->
+  Artwork.count (err, count) ->
+    Artwork.find(
+      "additional_images": { $size: 1 }
+      "additional_images.0.image_versions": 'medium'
+    ).limit(1).skip(_.random 0, count).toArray (err, docs) ->
+      res.send new Artwork(docs[0]).toJSON()

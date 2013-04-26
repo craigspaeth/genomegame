@@ -1,4 +1,5 @@
 User = require "#{process.cwd()}/app/models/user"
+_ = require 'underscore'
 
 @['GET users/:id'] = (req, res) ->
   user = new User _id: req.params.id
@@ -21,6 +22,7 @@ User = require "#{process.cwd()}/app/models/user"
     res.send user.toJSON()
     
 @['PUT users/:id'] = (req, res) ->
+  delete req.body.points
   user = new User _id: req.params.id
   return res.send 500 unless user.get('_id')
   user.fetch (err) ->

@@ -4,3 +4,4 @@ class window.User extends Backbone.Model
   
   defaults:
     selectedGenes: []
+    points: 0

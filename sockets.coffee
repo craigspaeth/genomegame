@@ -14,26 +14,15 @@ module.exports = (server) ->
       io.sockets.emit 'user:enter', id
   
   # Check who is the winner
-  rewardWinner = (callback) ->
-    return callback() unless Artwork.currentArtwork?
-    artworkGenes = Artwork.currentArtwork.geneNames()
-    User.find().toArray (err, docs) ->
-      return callback(err) if err
-      return callback() unless docs.length
-      users = (new User(doc) for doc in docs)
-      sorted = _.sortBy(users, (user) ->
-        numRight = _.intersection(user.get('selectedGenes'), artworkGenes).length
-        numWrong = user.get('selectedGenes').length - numRight
-        score = numRight - numWrong
-        user.set score: score
-        -score
-      )
-      topScore = sorted[0].get('score')
-      winners = (user for user in users when user.get('score') is topScore)
-      console.log "#{(user.get('name') for user in winners)} won!"
-      io.sockets.emit 'user:win', (winner.get('id') for winner in winners)
-      callback()
-    
+
+  
+  # Updates the winner's points
+  rewardWinners = (users, callback = ->) ->
+    return callback() unless users.length
+    callback _.after users.length, callback
+    user.set(points: user.get('points') + 1).save(callback) for user in users
+    io.sockets.emit 'user:win', (user.id for user in users)
+      
   # Select and emit a new artwork, and clear our the users selections
   emitRandomArtwork = (callback) ->
     Artwork.randomArtwork (err, artwork) ->
@@ -44,8 +33,9 @@ module.exports = (server) ->
   
   # Setup artwork loop
   setupRound = ->
-    rewardWinner (err) ->
+    User.findWinners Artwork.currentArtwork, (err, winners) ->
       throw err if err
+      rewardWinners winners if winners?.length
       emitRandomArtwork (err) ->
         throw err if err
         setTimeout setupRound, require('./config').TIMEOUT

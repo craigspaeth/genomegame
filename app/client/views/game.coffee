@@ -8,13 +8,10 @@ class window.GameView extends Backbone.View
     @artwork.url = '/api/current-artwork'
     @artwork.on 'change', @renderRandomArtwork
     socket.on 'user:enter', @fetchUsersAndRender
+    socket.on 'user:win', @fetchUsersAndRender
     socket.on 'artwork:random', (data) => 
       @artwork.set data
       @user.save selectedGenes: []
-    socket.on 'user:win', (ids) =>
-      if @user.get('id') in ids
-        $('body').animate { opacity: 0 }, 'fast', ->
-          $(@).animate { opacity: 1 }, 'fast'
     @artwork.fetch()
     @fetchUsersAndRender()
       

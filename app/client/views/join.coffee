@@ -10,6 +10,6 @@ class window.JoinView extends Backbone.View
     _.defer => @$('input').focus()  
   
   createUser: ->
-    new User(name: @$('input').val()).save().then ->
+    currentUser.save(name: @$('input').val()).then ->
       router.navigate '/game', trigger: true
     false

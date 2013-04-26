@@ -7,3 +7,4 @@ class window.User extends Backbone.Model
     
   parse: (res) ->
     res.selectedGenes = []
+    res

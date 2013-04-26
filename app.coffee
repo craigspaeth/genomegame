@@ -4,6 +4,7 @@ path = require 'path'
 db = require './lib/db'
 global.nap = require 'nap'
 http = require 'http'
+User = require './app/models/user'
 
 # Configure App
 app = express()
@@ -55,5 +56,6 @@ for route, fn of routes
 
 # Open DB connection, start app server, then load sockets
 db.open (err) ->
+  User.drop()
   server = app.listen app.get("port")
   require('./sockets')(server)

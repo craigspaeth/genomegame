@@ -28,7 +28,7 @@ class window.GameView extends Backbone.View
   activate: ->
     @artwork = new Artwork
     @artwork.on 'change', @renderRandomArtwork
-    socket.on 'user:enter', @fetchUsersAndRender
+    socket.on 'user:enter', _.debounce @fetchUsersAndRender
     socket.on 'artwork:random', (data) => 
       @artwork.set data
       setTimeout @submitSelection, TIMEOUT

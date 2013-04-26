@@ -12,14 +12,14 @@ class window.GameView extends Backbone.View
     (@users = new Users).fetch().then @renderUsers
   
   renderUsers: =>
-    @$('ul.users').html @users.map (user) => """
-      #{user.get 'name'}
-    """
+    @$('ul.users').html @users.map((user) =>
+      JST['users/list_item'] user: user
+    ).join ''
   
   renderRandomArtwork: =>
     @$('.artwork-title').html @artwork.get('title')
     @$('.artwork-frame img').attr 'src', @artwork.imageUrl()
-    
+    @$('ul.genes').html JST['']
   
   events:
     'activate': 'activate'

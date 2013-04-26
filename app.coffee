@@ -42,7 +42,10 @@ nap
     css:
       all: ['/app/stylesheets/**/*.styl']
     jst:
-      all: []
+      all: [
+        '/app/templates/users/**/*.jade'
+        '/app/templates/artworks/**/*.jade'
+      ]
 
 # Load routes
 for route, fn of routes
@@ -50,11 +53,7 @@ for route, fn of routes
   path = route.split(' ')[1]
   app[verb.toLowerCase()] path, fn
 
-# Start app server
-server = app.listen app.get("port")
-
-# Open DB connection
-db.open (err) -> console.warn err if err
-
-# Connect socket IO
-require('./sockets')(server)
+# Open DB connection, start app server, then load sockets
+db.open (err) ->
+  server = app.listen app.get("port")
+  require('./sockets')(server)

@@ -11,7 +11,8 @@ module.exports = (server) ->
       io.sockets.emit 'user:enter', id
 
   # Every so many intervals emit a new artwork
-  setInterval (->
+  emitArtwork = ->
     Artwork.randomArtwork (err, artwork) ->
       io.sockets.emit 'artwork:random', artwork.toJSON()
-  ), 1000
+  setInterval emitArtwork, 10000
+  setTimeout emitArtwork, 1000

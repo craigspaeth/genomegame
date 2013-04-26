@@ -1,6 +1,7 @@
 socketio = require 'socket.io'
 Artwork = require './app/models/artwork'
 _ = require 'underscore'
+User = require './app/models/user'
 
 module.exports = (server) ->
   
@@ -14,19 +15,39 @@ module.exports = (server) ->
   # Check who is the winner
   rewardWinner = (callback) ->
     return callback() unless Artwork.currentArtwork?
-    # User.find(selectedGenes: { $in: })
-    console.log Artwork.currentArtwork.geneNames()
-    callback()
+    artworkGenes = Artwork.currentArtwork.geneNames()
+    User.find().toArray (err, docs) ->
+      return callback(err) if err
+      console.log (for doc in docs
+        user = new User(doc)
+        {
+          name: user.get('name')
+          match: _.intersection(user.get('selectedGenes'), artworkGenes).length
+          diff: _.difference(artworkGenes, user.get('selectedGenes')).length
+          selected: user.get('selectedGenes').length
+        }
+      )
+      callback()
     
-  # Every so many intervals emit a new artwork
-  emitRandomArtwork = ->
+  # Select and emit a new artwork, and clear our the users selections
+  emitRandomArtwork = (callback) ->
     Artwork.randomArtwork (err, artwork) ->
-      io.sockets.emit 'artwork:random', artwork.toJSON()
-      Artwork.currentArtwork = artwork
+      return callback(err) if err
+      User.update {}, { selectedGenes: [] }, (err, docs) ->
+        return callback(err) if err
+        Artwork.currentArtwork = artwork
+        console.log "Selected #{Artwork.currentArtwork.get 'title'} with "  +
+                    " #{Artwork.currentArtwork.geneNames().length} genes."
+        io.sockets.emit 'artwork:random', artwork.toJSON()
+        callback()
   
-  setInterval (->
-    rewardWinner ->
-      emitRandomArtwork()
-  ), TIMEOUT
+  # Setup artwork loop
+  setupRound = ->
+    rewardWinner (err) ->
+      throw err if err
+      emitRandomArtwork (err) ->
+        throw err if err
+        setTimeout setupRound, TIMEOUT
+  setupRound()
   
-module.exports.TIMEOUT = TIMEOUT = 5000
+module.exports.TIMEOUT = TIMEOUT = 10000

@@ -4,7 +4,3 @@ class window.User extends Backbone.Model
   
   defaults:
     selectedGenes: []
-    
-  parse: (res) ->
-    res.selectedGenes = []
-    res

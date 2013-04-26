@@ -26,7 +26,6 @@ _ = require 'underscore'
     artwork.destroy (err) ->
       return res.send 500, err if err
       res.send artwork.toJSON()
-      
-@['GET random-artwork'] = (req, res) ->
-  Artwork.randomArtwork (err, artwork) ->
-    res.send artwork.toJSON()
+
+@['GET current-artwork'] = (req, res) ->
+  res.send Artwork.currentArtwork?.toJSON()

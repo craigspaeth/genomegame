@@ -47,7 +47,5 @@ module.exports = (server) ->
       throw err if err
       emitRandomArtwork (err) ->
         throw err if err
-        setTimeout setupRound, TIMEOUT
+        setTimeout setupRound, require('./config').TIMEOUT
   setupRound()
-  
-module.exports.TIMEOUT = TIMEOUT = 15000

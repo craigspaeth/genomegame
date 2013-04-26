@@ -18,7 +18,5 @@ for route in indexRoutes
     res.render "index",
       title: "Express"
       userId: req.session.userId
-      timeout: require('../../sockets').TIMEOUT
-      serverUrl: 'http://192.168.1.78:3000'
-      
-console.log require('../../sockets').TIMEOUT
+      timeout: require('../../config').TIMEOUT
+      serverUrl: require('../../config').SERVER_URL

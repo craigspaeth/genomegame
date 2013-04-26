@@ -19,4 +19,5 @@ for route in indexRoutes
       title: "Express"
       userId: req.session.userId
       timeout: require('../../config').TIMEOUT
+      delayBetween: require('../../config').DELAY_BETWEEN
       serverUrl: require('../../config').SERVER_URL

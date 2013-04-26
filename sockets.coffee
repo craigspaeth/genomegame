@@ -18,11 +18,11 @@ module.exports = (server) ->
   
   # Updates the winner's points
   rewardWinners = (users, callback = ->) ->
-    return callback() unless users.length
-    callback _.after users.length, callback
+    return callback() unless users?.length
+    callback _.after users.length, -> callback()
     user.set(points: user.get('points') + 1).save(callback) for user in users
-    io.sockets.emit 'user:win', (user.id for user in users)
-      
+    io.sockets.emit 'user:win', (user.id().toString() for user in users)
+    
   # Select and emit a new artwork, and clear our the users selections
   emitRandomArtwork = (callback) ->
     Artwork.randomArtwork (err, artwork) ->
@@ -35,8 +35,10 @@ module.exports = (server) ->
   setupRound = ->
     User.findWinners Artwork.currentArtwork, (err, winners) ->
       throw err if err
-      rewardWinners winners if winners?.length
-      emitRandomArtwork (err) ->
-        throw err if err
-        setTimeout setupRound, require('./config').TIMEOUT
+      rewardWinners winners, ->
+        setTimeout (->
+          emitRandomArtwork (err) ->
+            throw err if err
+            setTimeout setupRound, require('./config').TIMEOUT
+        ), require('./config').DELAY_BETWEEN
   setupRound()

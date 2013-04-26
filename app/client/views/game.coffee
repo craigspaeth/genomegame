@@ -9,6 +9,7 @@ class window.GameView extends Backbone.View
     @artwork.on 'change', @renderRandomArtwork
     socket.on 'user:enter', @fetchUsersAndRender
     socket.on 'user:win', @fetchUsersAndRender
+    socket.on 'user:win', @renderBetween
     socket.on 'artwork:random', (data) => 
       @artwork.set data
       @user.save selectedGenes: []
@@ -16,12 +17,20 @@ class window.GameView extends Backbone.View
     @fetchUsersAndRender()
       
   fetchUsersAndRender: =>
-    (@users = new Users).fetch().then @renderUsers
+    (@users = new Users).fetch().then =>
+      @renderUsers()
+      @renderBetween()
   
   renderUsers: =>
     @$('ul.users').html @users.map((user) =>
       JST['users/list_item'] user: user, current: user.get('id') is @user.get('id')
     ).join ''
+  
+  renderBetween: (ids) =>
+    console.log 'IDS', ids
+    @$('.betweem-frame').show()
+    @$('.artwork-frame').hide()
+    @$('h1 span.names').html (@users.get(id).get('name') for id in ids).join(' ')
   
   renderRandomArtwork: =>
     @$('.artwork-title').html @artwork.get('title')
@@ -30,6 +39,8 @@ class window.GameView extends Backbone.View
       JST['artworks/gene_list_item'] gene: gene
     )
     @$('.progress-bar').stop().css(width: '100%').animate { width: '0%' }, TIMEOUT
+    @$('.betweem-frame').hide()
+    @$('.artwork-frame').show()
     
   events:
     'click ul.genes li': 'selectGene'

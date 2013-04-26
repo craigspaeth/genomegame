@@ -10,6 +10,7 @@ module.exports = (server) ->
   # Emit whenever a user logs in
   io.on 'connection', (socket) ->
     socket.on 'user:enter', (id) ->
+      console.log "User #{id} entered"
       io.sockets.emit 'user:enter', id
   
   # Check who is the winner
@@ -26,8 +27,10 @@ module.exports = (server) ->
         user.set score: score
         -score
       )
-      console.log "WINNER #{sorted[0]?.get 'name'} #{sorted[0]?.get 'score'}"
-      io.sockets.emit 'user:win', sorted[0].get('id')
+      topScore = sorted[0].get('score')
+      winners = (user for user in users when user.get('score') is topScore)
+      console.log "#{(user.get('name') for user in winners)} won!"
+      io.sockets.emit 'user:win', (winner.get('id') for winner in winners)
       callback()
     
   # Select and emit a new artwork, and clear our the users selections

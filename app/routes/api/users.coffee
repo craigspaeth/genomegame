@@ -13,6 +13,7 @@ User = require "#{process.cwd()}/app/models/user"
 
 @['POST users'] = (req, res) ->
   user = new User req.body
+  return res.send 403 unless user.get 'name'
   user.save (err, docs) ->
     return res.send 500, err if err
     user.set docs[0]

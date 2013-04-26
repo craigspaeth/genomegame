@@ -1,6 +1,6 @@
 $ ->
   window.currentUser = new User id: USER_ID
-  window.socket = io.connect('http://localhost')
+  window.socket = io.connect(SERVER_URL)
   currentUser.fetch().then ->
     console.log "Welcome #{currentUser.get 'name'}"
     window.router = new Router

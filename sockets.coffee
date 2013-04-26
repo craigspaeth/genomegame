@@ -19,6 +19,7 @@ module.exports = (server) ->
     artworkGenes = Artwork.currentArtwork.geneNames()
     User.find().toArray (err, docs) ->
       return callback(err) if err
+      return callback() unless docs.length
       users = (new User(doc) for doc in docs)
       sorted = _.sortBy(users, (user) ->
         numRight = _.intersection(user.get('selectedGenes'), artworkGenes).length

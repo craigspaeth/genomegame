@@ -3,5 +3,5 @@ $ ->
   window.socket = io.connect(SERVER_URL)
   currentUser.fetch().then ->
     console.log "Welcome #{currentUser.get 'name'}"
-    window.router = new Router
     Backbone.history.start pushState: true
+    window.router = new Router

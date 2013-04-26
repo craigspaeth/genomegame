@@ -62,5 +62,6 @@ app.get '*', (req, res, next) ->
 # Open DB connection, start app server, then load sockets
 db.open (err) ->
   User.drop ->
-    server = app.listen app.get("port")
+    server = app.listen app.get("port"), ->
+      console.log 'listening'
     require('./sockets')(server)

@@ -3,7 +3,9 @@
     h1
       span.names
       |  won that round!
-    h2 Get ready for the next artwork in #{delayBetween / 1000} seconds!
+    h2 Get ready for the next artwork in 
+      span= (5000 / 1000)
+      |  seconds!
     .artwork-container
       img
       ul.actual-genes
